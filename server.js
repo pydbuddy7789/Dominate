@@ -1,7 +1,7 @@
 const express=require("express"),session=require("express-session"),bcrypt=require("bcryptjs"),DB=require("better-sqlite3"),path=require("path");
 const app=express(),db=new DB(path.join(__dirname,"ranking.db"));
 db.exec(`CREATE TABLE IF NOT EXISTS items(id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT NOT NULL,value REAL NOT NULL DEFAULT 0,updated_at TEXT DEFAULT CURRENT_TIMESTAMP);CREATE TABLE IF NOT EXISTS admins(id INTEGER PRIMARY KEY AUTOINCREMENT,username TEXT UNIQUE,password_hash TEXT NOT NULL);`);
-if(!db.prepare("SELECT id FROM admins WHERE username=?").get("admin"))db.prepare("INSERT INTO admins(username,password_hash) VALUES(?,?)").run("admin",bcrypt.hashSync("admin1234",10));
+if(!db.prepare("SELECT id FROM admins WHERE username=?").get("admin"))db.prepare("INSERT INTO admins(username,password_hash) VALUES(?,?)").run("admin",bcrypt.hashSync("aubook05052026",10));
 if(!db.prepare("SELECT COUNT(*) c FROM items").get().c){let i=db.prepare("INSERT INTO items(name,value) VALUES(?,?)");[["PLAYER ONE",980],["PLAYER TWO",875],["PLAYER THREE",790],["PLAYER FOUR",650],["PLAYER FIVE",520]].forEach(x=>i.run(...x))}
 app.use(express.json());app.use(express.urlencoded({extended:false}));app.use(session({secret:process.env.SESSION_SECRET||"dominate-ranking-change-me",resave:false,saveUninitialized:false,cookie:{httpOnly:true,sameSite:"lax"}}));app.use(express.static(path.join(__dirname,"public")));
 const auth=(q,r,n)=>q.session.adminId?n():r.status(401).json({error:"Unauthorized"});
