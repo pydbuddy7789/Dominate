@@ -128,7 +128,7 @@ async function saveItem(id) {
   const response = await fetch("/api/items/" + id, {
     method: "PUT",
     headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({ name, value })
+    body: JSON.stringify({ name, value, hands: document.querySelector("#hands-" + id).value })
   });
 
   if (!response.ok) {
